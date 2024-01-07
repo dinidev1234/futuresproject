@@ -1,18 +1,22 @@
-# Используем базовый образ Python
+# Use an official Python runtime as a base image
 FROM python:3.11
 
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# Устанавливаем рабочую директорию в контейнере
+# Set working directory in the container
 WORKDIR /futuresproject
 
-# Копируем файлы зависимостей в контейнер
+# Copy the requirements file and install dependencies
 COPY requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Устанавливаем зависимости
-RUN pip install -r requirements.txt
-
-# Копируем все файлы из текущего каталога в контейнер
+# Mounts the application code to the image
 COPY . .
+WORKDIR /futuresproject
 
-# Определяем команду для запуска Django приложения внутри контейнера
-CMD ["python", "manage.py", "runserver", "127.0.0.1:8000"]
+EXPOSE 8000
+
+# Define the command to run the Django development server
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
