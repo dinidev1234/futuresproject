@@ -3,7 +3,7 @@ from .views import RegisterAPIView, ProfileViewSet
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'user', ProfileViewSet, basename='user')
+router.register(r'users', ProfileViewSet, basename='user')
 
 
 
