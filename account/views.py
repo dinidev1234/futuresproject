@@ -1,6 +1,7 @@
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import viewsets
+from rest_framework import status
 from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from .models import Player
@@ -32,4 +33,12 @@ class ProfileViewSet(viewsets.ViewSet):
         user = get_object_or_404(queryset, pk=pk)
         serializer = PlayerSerializer(user)
         return Response(serializer.data)
+
+    def partial_update(self, request, pk=None):
+        queryset = Player.objects.get(pk=pk)
+        serializer = PlayerSerializer(queryset, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 

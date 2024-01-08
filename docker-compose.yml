@@ -2,8 +2,8 @@ version: '3.9'
 
 services:
   db:
-    image: postgres:15
-    restart: always
+    image: postgres:15-alpine
+    restart: on-failure
     volumes:
       - ./data/db:/var/lib/postgresql/data
     ports:
@@ -23,5 +23,7 @@ services:
       - POSTGRES_NAME=futuresproject
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+
     depends_on:
       - db
+
