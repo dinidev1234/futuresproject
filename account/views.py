@@ -21,24 +21,9 @@ class RegisterAPIView(generics.GenericAPIView):
         })
 
 
-class ProfileViewSet(viewsets.ViewSet):
+class ProfileViewSet(viewsets.ModelViewSet):
+    queryset = Player.objects.all()
+    serializer_class = PlayerSerializer
 
-    def list(self, request):
-        queryset = Player.objects.all()
-        serializer = PlayerSerializer(queryset, many=True)
-        return Response({'players': serializer.data})
-
-    def retrieve(self, request, pk=None):
-        queryset = Player.objects.all()
-        user = get_object_or_404(queryset, pk=pk)
-        serializer = PlayerSerializer(user)
-        return Response(serializer.data)
-
-    def partial_update(self, request, pk=None):
-        queryset = Player.objects.get(pk=pk)
-        serializer = PlayerSerializer(queryset, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
